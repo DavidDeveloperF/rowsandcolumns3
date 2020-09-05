@@ -28,19 +28,42 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   @override
   Widget build(BuildContext context) {
-
     List<Color> manyColors = [Colors.red, Colors.green, Colors.blue];
     List<Widget> myRowChildren = [];
     List<List<int>> numbersList = [];
-    List<Widget> columnNumbers = [];
-    for(int x=0; x<=9; x++) {
-      for(int y=0; y<=9; y++) {
-        debugPrint("x/y = $x $y");    // ok this works
+    List<int> columnNumbersList = [];
+    int maxRows = 10;
+    int maxColumnNumbers = 10;
+    int z = 0;
+    int myCounter = 0;
+
+    for (int x = 0; x < maxRows; x++) {
+      // rows 0-9 (10 of them)
+      for (int y = 0; y < maxColumnNumbers; y++) {
+        int currentNumber = y + z; // 0,1,2,3,4,5,6,7,8,9,10  11,12,13,etc
+        columnNumbersList.add(currentNumber);
+
+        myCounter++;
+        debugPrint("x/y = ($x,$y) and currentNumber= $currentNumber"
+            " myCounter=$myCounter"); // ok this works
       }
+      z += maxColumnNumbers; // z is counting rows in 10's Actually 11?
+      numbersList.add(columnNumbersList); // add col numbers to the row
+      columnNumbersList = []; // empty the column
     }
+
+    myRowChildren = numbersList
+        .map(
+          (columns) => Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: columns
+                .map((number) => Container(child: Text(number.toString())))
+                .toList(),
+          ),
+        )
+        .toList();
 
     return Scaffold(
         appBar: AppBar(
@@ -48,7 +71,8 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         body: Row(
 //            children: [Text("basic text2"),]
-            children: myRowChildren,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: myRowChildren,
         ));
   }
 }
