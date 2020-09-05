@@ -58,11 +58,11 @@ class _SecondPageMenuState extends State<SecondPageMenu> {
             //                            look up the filename
             //            y=animal group size                       x= aged color
             // todo This is where we should use the image lookup to load the icon
-            String filenameAndPath = "images/" +
+            String filenameAndPath = "   -  lib/images/" +
                 animalGroupSizeList[y - 1].imageFileName +
                 ageBandColorsList[x - 1] +
-                ".png";
-            debugPrint(filenameAndPath + " ($x,$y)");
+                ".png" ;
+            debugPrint(filenameAndPath + "   # ${animalGroupSizeList[y-1].key} ${ageMinutesAsString(ageBandMinutes[x - 1])} ($x,$y)");
             columnWidgets.add(Text(
                 "${animalGroupSizeList[y - 1].imageFileName}${ageBandColorsList[x - 1]}"));
           }
@@ -100,6 +100,7 @@ class _SecondPageMenuState extends State<SecondPageMenu> {
 //        height: 560,
 //        width: 480,
           children: <Widget>[
+            Image.asset("lib/images/lonegrey.png"),
             Transform.scale(
               scale: 0.75,
               child: Row(
