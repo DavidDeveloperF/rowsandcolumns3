@@ -14,6 +14,9 @@ class SecondPageMenu extends StatefulWidget {
 class _SecondPageMenuState extends State<SecondPageMenu> {
   List<Widget> myRowColumnWidgets = [];
   TextStyle titleStyle = TextStyle(fontWeight: FontWeight.bold,);
+  double matrixRowHeight = 30.0;
+  double matrixColWidth = 50.0;
+
   // col  1 = description
   // cols 2 = images by age band...
   //        first item in each col (i.e top row) should be a heading/title
@@ -44,16 +47,24 @@ class _SecondPageMenuState extends State<SecondPageMenu> {
         //                                                                        0,0 is the top left title
         if (x == 0) {
           if (y == 0) {
-            columnWidgets.add(Text("Up to: ", style: titleStyle,));
+            columnWidgets.add(
+              Container(height: matrixRowHeight/2.0, width: matrixColWidth, child:
+                Text("Up to: ", style: titleStyle,)
+              ));
             //                                                                    0,y is the animalGroupSize title (key)
           } else {
-            columnWidgets.add(Text(animalGroupSizeList[y - 1].key,
-              style: titleStyle,));
+            columnWidgets.add(
+                Container(height: matrixRowHeight, width: matrixColWidth, child:
+                  Text(animalGroupSizeList[y - 1].key,style: titleStyle,)
+                ));
           }
         } else {
         //                                                                        x,0 is the top row - age
           if (y == 0) {
-            columnWidgets.add(Text(ageMinutesAsString(ageBandMinutes[x - 1]), style: titleStyle,));
+            columnWidgets.add(
+                Container(height: matrixRowHeight/2.0, width: matrixColWidth, child:
+                    Text(ageMinutesAsString(ageBandMinutes[x - 1]), style: titleStyle,)
+            ));
           } else {    //                                                          x,y is the file name GROUP+COLOR
         //  for the main x,y items we need a file name
             //                            look up the filename
@@ -63,11 +74,12 @@ class _SecondPageMenuState extends State<SecondPageMenu> {
                 animalGroupSizeList[y - 1].imageFileName +
                 ageBandColorsList[x - 1] +
                 ".png" ;
-            debugPrint("    - " + filenameAndPath + "   # ${animalGroupSizeList[y-1].key} ${ageMinutesAsString(ageBandMinutes[x - 1])} ($x,$y)");
+//            debugPrint("    - " + filenameAndPath + "   # ${animalGroupSizeList[y-1].key} ${ageMinutesAsString(ageBandMinutes[x - 1])} ($x,$y)");
             columnWidgets.add(
+                Container(height: matrixRowHeight, width: matrixColWidth, child:
 //                Text("${animalGroupSizeList[y - 1].imageFileName}${ageBandColorsList[x - 1]}")
                 Image.asset(filenameAndPath)
-            );
+            ));
 //            Image.asset(filenameAndPath);
     }
         }
@@ -76,7 +88,7 @@ class _SecondPageMenuState extends State<SecondPageMenu> {
       matrixList.add(columnWidgets);
     } // end of x loop (columns)
 
-    debugPrint("matrixList= " + matrixList.toString());
+//    debugPrint("matrixList= " + matrixList.toString());
 
     //  so this widget list displays rows which are each made of columns of widgets
     myRowColumnWidgets = matrixList
@@ -84,6 +96,7 @@ class _SecondPageMenuState extends State<SecondPageMenu> {
           // map the numberList to a Column
           (columns) => Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: columns             // map the actual item to a Container
                 .map((item) {
               return Container(
@@ -109,6 +122,7 @@ class _SecondPageMenuState extends State<SecondPageMenu> {
               scale: 0.75,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: myRowColumnWidgets,
               ),
             ),
