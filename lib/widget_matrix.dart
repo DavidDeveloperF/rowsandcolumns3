@@ -16,6 +16,7 @@ class _SecondPageMenuState extends State<SecondPageMenu> {
   TextStyle titleStyle = TextStyle(fontWeight: FontWeight.bold,);
   double matrixRowHeight = 30.0;
   double matrixColWidth = 50.0;
+  double matrixSizeScale = 0.95;
 
   // col  1 = description
   // cols 2 = images by age band...
@@ -23,7 +24,7 @@ class _SecondPageMenuState extends State<SecondPageMenu> {
 
   @override
   Widget build(BuildContext context) {
-    //        AGEBAND       +red  +blue +green +brown +grey
+//         AGEBAND       +red  +blue +green +brown +grey
 //    GROUPSIZE
 //    herd            herdred herdblue
 //    small
@@ -31,8 +32,6 @@ class _SecondPageMenuState extends State<SecondPageMenu> {
 //    stag
 //    unknown
 //    unconfirmed
-
-
 
     List<List<Widget>> matrixList = [];
     List<Widget> columnWidgets = [];
@@ -48,13 +47,13 @@ class _SecondPageMenuState extends State<SecondPageMenu> {
         if (x == 0) {
           if (y == 0) {
             columnWidgets.add(
-              Container(height: matrixRowHeight/2.0, width: matrixColWidth, child:
+              Container(height: matrixRowHeight, width: matrixColWidth, child:
                 Text("Up to: ", style: titleStyle,)
               ));
             //                                                                    0,y is the animalGroupSize title (key)
           } else {
             columnWidgets.add(
-                Container(height: matrixRowHeight, width: matrixColWidth, child:
+                Container(height: matrixRowHeight, width: matrixColWidth*1.7, child:
                   Text(animalGroupSizeList[y - 1].key,style: titleStyle,)
                 ));
           }
@@ -110,23 +109,26 @@ class _SecondPageMenuState extends State<SecondPageMenu> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Second Page (images)"),
+        title: Text("Widget Matrix"),
       ),
 
-      body: Column(
+      body: Padding(
+        padding: const EdgeInsets.all(2.0),
+        child: Column(
 //        height: 560,
 //        width: 480,
-          children: <Widget>[
+            children: <Widget>[
 //            Image.asset("lib/images/lonegrey.png"),
-            Transform.scale(
-              scale: 0.75,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: myRowColumnWidgets,
+              Transform.scale(
+                scale: matrixSizeScale,     // 0.75,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: myRowColumnWidgets,
+                ),
               ),
-            ),
-          ]),
+            ]),
+      ),
 
       floatingActionButton: FloatingActionButton(
         onPressed: () {

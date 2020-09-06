@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:rowsandcolumns/image_code.dart';
+//import 'package:rowsandcolumns/image_code.dart';
 
-import 'second.dart';
+import 'widget_matrix.dart';
 
 void main() {
   runApp(MyApp());

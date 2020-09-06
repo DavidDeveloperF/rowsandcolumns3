@@ -29,7 +29,7 @@ AnimalGroupSize(key: "Unconfirmed", description: "unconfirmed Sighting", animalT
 final List<String> ageBandColorsList =[
   "red",
   "blue",
-  "green",
+  "brown",      // ought to be green, but don't actually have a green set
   "brown",
   "grey"
 ];
@@ -105,7 +105,7 @@ String ageMinutesAsString (int ageMinutes) {
           (ageMinutes / 60).toStringAsFixed(0) +  " hrs";
     } else {
       //                                    Otherwise - show age in days         days
-      ageAsString = (ageMinutes / 60 / 24).toStringAsFixed(1) + " days";
+      ageAsString = (ageMinutes / 60 / 24).toStringAsFixed(0) + " days";
     }
   }
   return ageAsString;
