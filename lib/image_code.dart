@@ -11,6 +11,8 @@ import 'package:flutter/services.dart';       // added by SDK
 // # ageBandColorlist       - TODO  ought to be in the database
 // #                        - time bands: eg up to 240min = red (most current)
 // #                        - Over final band also means due to be archived
+// # lookupAgeBandColumn    - Loop through in descending order because we want the lowest column number
+// # lookupAnimalGroupRow   - Loop through animalGroupSizeList and return the relevant row number
 // #############################################################################
 
 class AnimalGroupSize {
@@ -47,12 +49,13 @@ final List<int> ageBandMinutes =      [240,   720,   1440,     2880,    7200];
 final List<String> ageBandColorsList =["red","blue", "brown", "brown",  "grey"];
 // Third item ought to be green, but don't actually have any green images
 
-// #############################################################################
+// ############################################################################# lookupAgeBandColumn
 // #  lookupAgeBandColumn
 // #  Loop through in descending order because we want the lowest column number
+// #  default is last column number (ageBandMinutes.length -1)
 // #############################################################################
 int lookupAgeBandColumn(int itemAgeMinutes) {
-  int columnIndex = ageBandMinutes.length;            // oldest = final column
+  int columnIndex = ageBandMinutes.length -1;     // oldest = final column
                                                   // ought to be archived if > final band
   for (int i=ageBandMinutes.length; i>= 0; i--) {
     if (itemAgeMinutes <= ageBandMinutes[i]) {columnIndex = i;}
@@ -60,12 +63,13 @@ int lookupAgeBandColumn(int itemAgeMinutes) {
     }
   return columnIndex;
 }
-// #############################################################################
+// ############################################################################# lookupAnimalGroupRow
 // #  lookupAnimalGroupRow
-// #  Loop through in descending order because we want the lowest column number
+// #  Loop through animalGroupSizeList and return the relevant row number
+// #  default is last row number (animalGroupSizeList.length -1)
 // #############################################################################
 int lookupAnimalGroupRow(String animalGroupSize) {
-  int rowIndex = animalGroupSizeList.length;      // final column = default
+  int rowIndex = animalGroupSizeList.length -1;      // final column = default
 
   for (int i=0; i< animalGroupSizeList.length; i++) {
     if (animalGroupSize == animalGroupSizeList[i].key) {rowIndex = i;}
@@ -75,6 +79,135 @@ int lookupAnimalGroupRow(String animalGroupSize) {
 }
 
 
+// ## Matrices ###########################################################################
+List<List<Widget>> descriptionMatrix = [];    // matrix 1) as described below
+List<Widget>       columnWidgets = [];        // populates the columns for 1)
+List<List<Uint8List>> markerIconMatrix = [];  // matrix 2) as described below
+List<Uint8List>    columnIcons = [];          // populates the columns 2)
+
+
+// #############################################################################
+// # loadIconAndDescriptionMatrix(double matrixRowHeight, double matrixColWidth ) {
+// # build TWO matrices:
+// #  1) descriptionMatrix - descriptions and images by age band and groupsize
+// #     =================
+// #        AGEBAND       +red  +blue +green +brown +grey
+// #   GROUPSIZE
+// #   herd            herdred herdblue
+// #   small
+// #   lone
+// #   stag
+// #   unknown
+// #   unconfirmed
+// #   2) markerIconMatrix - the Uint8List versions of the image files above
+// #      ================
+// #      built at the same time, without header or title column
+// ############################################################################
+void loadIconAndDescriptionMatrix(double matrixRowHeight, double matrixColWidth ) {
+  TextStyle titleStyle = TextStyle(fontWeight: FontWeight.bold,);
+
+  //  index 0 - description, so <= matrix width [5 bands = 6 columns]           FOR Loop x
+  for (int x = 0; x <= ageBandMinutes.length; x++) {
+
+    columnWidgets = []; // empty the column   images or desriptions
+    columnIcons = [];   // empty the column   Uint8List
+
+    //                                                                          FOR loop (y)
+    for (int y = 0; y <= animalGroupSizeList.length; y++) {
+
+      //                                                                        0,0 is the top left title
+      if (x == 0) {
+        if (y == 0) {
+          columnWidgets.add(
+              Container(height: matrixRowHeight, width: matrixColWidth, child:
+              Text("Up to: ", style: titleStyle,)
+              ));
+          //                                                                    0,y is the animalGroupSize title (key)
+        } else {
+          columnWidgets.add(
+              Container(height: matrixRowHeight, width: matrixColWidth*1.7, child:
+              Text(animalGroupSizeList[y - 1].key,style: titleStyle,)
+              ));
+        }
+      } else {
+        //                                                                        x,0 is the top row - age
+        if (y == 0) {
+          columnWidgets.add(
+              Container(height: matrixRowHeight/2.0, width: matrixColWidth, child:
+              Text(ageMinutesAsString(ageBandMinutes[x - 1]), style: titleStyle,)
+              ));
+        } else {    //                                                          x,y is the file name GROUP+COLOR
+          //  for the main x,y items we need a file name
+          //                            look up the filename
+          //            y=animal group size                       x= aged color
+          // todo This is where we should use the image lookup to load the icon
+          String filenameAndPath = "images/" +
+              animalGroupSizeList[y - 1].imageFileName +
+              ageBandColorsList[x - 1] +
+              ".png" ;
+          columnWidgets.add(
+              Container(height: matrixRowHeight, width: matrixColWidth, child:
+              Image.asset(filenameAndPath)
+              ));
+// todo as I suspected, can't put a Future here - need to figure out a way round this
+            debugPrint("want to run getBytesFromAsset($filenameAndPath, 100) for (${x-1},${y-1})");
+//          columnIcons.add(
+//              getBytesFromAsset(filenameAndPath, 100)    // can't have Future<Uint8List> ?????
+//          );
+        } // end of else (x,y) where x>0 and y>0
+      } // end of else x>0
+
+    } // end of y loop (rows)   end of y loop (rows)      end of y loop (rows)  end of y loop (rows)
+    descriptionMatrix.add(columnWidgets);
+    markerIconMatrix.add(columnIcons);
+  } // end of x loop (columns)         // end of x loop (columns)            // end of x loop (columns)
+
+}
+
+
+// ############################################################################
+// #   getBytesFromAsset
+// #   looks up an image file and converts to Uint8List (for map marker icons)
+// ############################################################################
+Future<Uint8List> getBytesFromAsset(String path, int width) async {
+  ByteData data = await rootBundle.load(path);
+  ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(), targetWidth: width);
+  ui.FrameInfo fi = await codec.getNextFrame();
+
+//  debugPrint ("** getBytesFromAsset $path");
+
+  return (await fi.image.toByteData(format: ui.ImageByteFormat.png)).buffer.asUint8List();
+}
+
+// ############################################################################
+// #   ageMinutesAsString
+// #   format minutes to text as mins/hrs/days as appropriate
+// ############################################################################
+String ageMinutesAsString (int ageMinutes) {
+  String ageAsString;
+
+  //                                       up to 120 min / 2 hours - show age in minutes
+  if (ageMinutes < 120) {
+    ageAsString = ageMinutes.toStringAsFixed(0) + " mins";
+  } else {
+    //                                     up to 1200 min / 20 hours - show age in hours
+    if (ageMinutes < 1200) {
+      ageAsString =
+          (ageMinutes / 60).toStringAsFixed(0) +  " hrs";
+    } else {
+      //                                    Otherwise - show age in days         days
+      ageAsString = (ageMinutes / 60 / 24).toStringAsFixed(0) + " days";
+    }
+  }
+  return ageAsString;
+}
+
+
+// #################################################################################
+// ############ ORIGINAL CODE FROM WATD 0.60########################################
+// #################################################################################
+// ## It used a flat matrix and long set of switch statements to lookup images #####
+// #################################################################################
 // OK we'll build a table of markers
 List <Uint8List> markerIconList = new List<Uint8List>();
 
@@ -109,38 +242,3 @@ List <Uint8List> markerIconList = new List<Uint8List>();
 //  "images/outline_deer_grey_16.png",    // Not current Sightings    #27
 //  "images/outline_deer_grey_16.png",    // Not current Sightings    #28
 //  ];
-
-
-
-Future<Uint8List> getBytesFromAsset(String path, int width) async {
-  ByteData data = await rootBundle.load(path);
-  ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(), targetWidth: width);
-  ui.FrameInfo fi = await codec.getNextFrame();
-
-//  debugPrint ("** getBytesFromAsset $path");
-
-  return (await fi.image.toByteData(format: ui.ImageByteFormat.png)).buffer.asUint8List();
-}
-
-// ############################################################################
-// #   ageMinutesAsString
-// #   format minutes to text as mins/hrs/days as appropriate
-// ############################################################################
-String ageMinutesAsString (int ageMinutes) {
-  String ageAsString;
-
-  //                                       up to 120 min / 2 hours - show age in minutes
-  if (ageMinutes < 120) {
-    ageAsString = ageMinutes.toStringAsFixed(0) + " mins";
-  } else {
-    //                                     up to 1200 min / 20 hours - show age in hours
-    if (ageMinutes < 1200) {
-      ageAsString =
-          (ageMinutes / 60).toStringAsFixed(0) +  " hrs";
-    } else {
-      //                                    Otherwise - show age in days         days
-      ageAsString = (ageMinutes / 60 / 24).toStringAsFixed(0) + " days";
-    }
-  }
-  return ageAsString;
-}
