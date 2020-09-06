@@ -34,38 +34,42 @@ class _SecondPageMenuState extends State<SecondPageMenu> {
     List<List<Widget>> matrixList = [];
     List<Widget> columnWidgets = [];
 
-    //  index 0 - description, so <= matrix width [5 bands = 6 columns]
+    //  index 0 - description, so <= matrix width [5 bands = 6 columns]           FOR Loop x
     for (int x = 0; x <= ageBandMinutes.length; x++) {
 
       columnWidgets = []; // empty the column
-
-      //                                          first row/col is description
+      //                                                                          FOR loop (y)
       for (int y = 0; y <= animalGroupSizeList.length; y++) {
-        //                                        0,0 is the top left title
+
+        //                                                                        0,0 is the top left title
         if (x == 0) {
           if (y == 0) {
             columnWidgets.add(Text("Up to: ", style: titleStyle,));
-            //                                    0,y is the animalGroupSize title (key)
+            //                                                                    0,y is the animalGroupSize title (key)
           } else {
-            columnWidgets.add(Text(animalGroupSizeList[y - 1].key, style: titleStyle,));
+            columnWidgets.add(Text(animalGroupSizeList[y - 1].key,
+              style: titleStyle,));
           }
         } else {
-        //                                        x,0 is the top row - age
+        //                                                                        x,0 is the top row - age
           if (y == 0) {
             columnWidgets.add(Text(ageMinutesAsString(ageBandMinutes[x - 1]), style: titleStyle,));
-          } else {
+          } else {    //                                                          x,y is the file name GROUP+COLOR
         //  for the main x,y items we need a file name
             //                            look up the filename
             //            y=animal group size                       x= aged color
             // todo This is where we should use the image lookup to load the icon
-            String filenameAndPath = "   -  lib/images/" +
+            String filenameAndPath = "images/" +
                 animalGroupSizeList[y - 1].imageFileName +
                 ageBandColorsList[x - 1] +
                 ".png" ;
-            debugPrint(filenameAndPath + "   # ${animalGroupSizeList[y-1].key} ${ageMinutesAsString(ageBandMinutes[x - 1])} ($x,$y)");
-            columnWidgets.add(Text(
-                "${animalGroupSizeList[y - 1].imageFileName}${ageBandColorsList[x - 1]}"));
-          }
+            debugPrint("    - " + filenameAndPath + "   # ${animalGroupSizeList[y-1].key} ${ageMinutesAsString(ageBandMinutes[x - 1])} ($x,$y)");
+            columnWidgets.add(
+//                Text("${animalGroupSizeList[y - 1].imageFileName}${ageBandColorsList[x - 1]}")
+                Image.asset(filenameAndPath)
+            );
+//            Image.asset(filenameAndPath);
+    }
         }
       } // end of y loop (rows)
 //      debugPrint("End of y loop" + columnWidgets.toString());
@@ -100,7 +104,7 @@ class _SecondPageMenuState extends State<SecondPageMenu> {
 //        height: 560,
 //        width: 480,
           children: <Widget>[
-            Image.asset("lib/images/lonegrey.png"),
+//            Image.asset("lib/images/lonegrey.png"),
             Transform.scale(
               scale: 0.75,
               child: Row(

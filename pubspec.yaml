@@ -15,7 +15,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.0+1
+version: 1.0.0+2
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -44,10 +44,39 @@ flutter:
   # the material Icons class.
   uses-material-design: true
 
-  # To add assets to your application, add an assets section, like this:
+  # File names below were taken from the debugprint in Second.dart as it fills the matrixList
+  # - don't actually have any green images, so I copied the blue ones & remamed the copies
   assets:
-     - lib/images/outline_deergrey.png
-     - lib/images/lonegrey.png
+    - images/herdred.png      # Herd (>9 deer) 5 hrs (1,1)
+    - images/smallred.png   # Small Group 5 hrs (1,2)
+    - images/lonered.png      # Lone Deer 5 hrs (1,3)
+    - images/stagred.png   # Lone Stag 5 hrs (1,4)
+    - images/deerred.png   # Unknown 5 hrs (1,5)
+    - images/outlinered.png   # Unconfirmed 5 hrs (1,6)
+    - images/herdblue.png   # Herd (>9 deer) 12 hrs (2,1)
+    - images/smallblue.png   # Small Group 12 hrs (2,2)
+    - images/loneblue.png   # Lone Deer 12 hrs (2,3)
+    - images/stagblue.png   # Lone Stag 12 hrs (2,4)
+    - images/deerblue.png   # Unknown 12 hrs (2,5)
+    - images/outlineblue.png   # Unconfirmed 12 hrs (2,6)
+    - images/herdgreen.png   # Herd (>9 deer) 1.0 days (3,1)
+    - images/smallgreen.png   # Small Group 1.0 days (3,2)
+    - images/lonegreen.png   # Lone Deer 1.0 days (3,3)
+    - images/staggreen.png   # Lone Stag 1.0 days (3,4)
+    - images/deergreen.png   # Unknown 1.0 days (3,5)
+    - images/outlinegreen.png   # Unconfirmed 1.0 days (3,6)
+    - images/herdbrown.png   # Herd (>9 deer) 2.0 days (4,1)
+    - images/smallbrown.png   # Small Group 2.0 days (4,2)
+    - images/lonebrown.png   # Lone Deer 2.0 days (4,3)
+    - images/stagbrown.png   # Lone Stag 2.0 days (4,4)
+    - images/deerbrown.png   # Unknown 2.0 days (4,5)         copied deergrey
+    - images/outlinebrown.png   # Unconfirmed 2.0 days (4,6)
+    - images/herdgrey.png   # Herd (>9 deer) 5.0 days (5,1)
+    - images/smallgrey.png   # Small Group 5.0 days (5,2)
+    - images/lonegrey.png   # Lone Deer 5.0 days (5,3)
+    - images/staggrey.png   # Lone Stag 5.0 days (5,4)
+    - images/deergrey.png   # Unknown 5.0 days (5,5)
+    - images/outlinegrey.png   # Unconfirmed 5.0 days (5,6)     -
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

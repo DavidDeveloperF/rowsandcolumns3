@@ -44,37 +44,37 @@ final List<int> ageBandMinutes =[300, 720, 1440,2880,7200];
 // OK we'll build a table of markers
 List <Uint8List> markerIconList = new List<Uint8List>();
 
-List <String> markerIconAssets = [
-  "images/deer_16.png",       // unknown/default            item 0
-  "images/herdred_24.png",    // current icons red 1-4
-  "images/lonered_24.png",
-  "images/smallred_24.png",
-  "images/stagred_24.png",
-  "images/herdblue_24.png",   // older icons blue 5-8
-  "images/loneblue_24.png",
-  "images/smallblue_24.png",
-  "images/stagblue_24.png",
-  "images/herdbrown_24.png",  // even older brown 9-12
-  "images/lonebrown_24.png",
-  "images/smallbrown_24.png",
-  "images/stagbrown_24.png",
-  "images/herdgrey_16.png",   // very old icons grey (and smaller) 13-16
-  "images/lonegrey_16.png",
-  "images/smallgrey_16.png",
-  "images/staggrey_16.png",
-  "images/deerblue_24.png",   // spare for future use    17-20
-  "images/deerblue_24.png",   // spare for future use    17-20
-  "images/deerblue_24.png",   // spare for future use    17-20
-  "images/deerblue_24.png",   // spare for future use    17-20
-  "images/coffee_cup.png",    // coffee cup = cafe        #21
-  "images/information.png",   // visitor information      #22
-  "images/wc_sign.png",       // toilets                  #23
-  "images/outline_deer_red_24.png",     // Not current Sightings    #24
-  "images/outline_deer_blue_24.png",    // Not current Sightings    #25
-  "images/outline_deer_brown_24.png",   // Not current Sightings    #26
-  "images/outline_deer_grey_16.png",    // Not current Sightings    #27
-  "images/outline_deer_grey_16.png",    // Not current Sightings    #28
-  ];
+//List <String> markerIconAssets = [
+//  "images/deer_16.png",       // unknown/default            item 0
+//  "images/herdred_24.png",    // current icons red 1-4
+//  "images/lonered_24.png",
+//  "images/smallred_24.png",
+//  "images/stagred_24.png",
+//  "images/herdblue_24.png",   // older icons blue 5-8
+//  "images/loneblue_24.png",
+//  "images/smallblue_24.png",
+//  "images/stagblue_24.png",
+//  "images/herdbrown_24.png",  // even older brown 9-12
+//  "images/lonebrown_24.png",
+//  "images/smallbrown_24.png",
+//  "images/stagbrown_24.png",
+//  "images/herdgrey_16.png",   // very old icons grey (and smaller) 13-16
+//  "images/lonegrey_16.png",
+//  "images/smallgrey_16.png",
+//  "images/staggrey_16.png",
+//  "images/deerblue_24.png",   // spare for future use    17-20
+//  "images/deerblue_24.png",   // spare for future use    17-20
+//  "images/deerblue_24.png",   // spare for future use    17-20
+//  "images/deerblue_24.png",   // spare for future use    17-20
+//  "images/coffee_cup.png",    // coffee cup = cafe        #21
+//  "images/information.png",   // visitor information      #22
+//  "images/wc_sign.png",       // toilets                  #23
+//  "images/outline_deer_red_24.png",     // Not current Sightings    #24
+//  "images/outline_deer_blue_24.png",    // Not current Sightings    #25
+//  "images/outline_deer_brown_24.png",   // Not current Sightings    #26
+//  "images/outline_deer_grey_16.png",    // Not current Sightings    #27
+//  "images/outline_deer_grey_16.png",    // Not current Sightings    #28
+//  ];
 
 
 
