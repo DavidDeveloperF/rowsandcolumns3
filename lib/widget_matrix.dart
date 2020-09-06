@@ -13,7 +13,6 @@ class SecondPageMenu extends StatefulWidget {
 
 class _SecondPageMenuState extends State<SecondPageMenu> {
   List<Widget> myRowColumnWidgets = [];
-  TextStyle titleStyle = TextStyle(fontWeight: FontWeight.bold,);
   double matrixRowHeight = 30.0;
   double matrixColWidth = 50.0;
   double matrixSizeScale = 0.95;
@@ -24,73 +23,12 @@ class _SecondPageMenuState extends State<SecondPageMenu> {
 
   @override
   Widget build(BuildContext context) {
-//         AGEBAND       +red  +blue +green +brown +grey
-//    GROUPSIZE
-//    herd            herdred herdblue
-//    small
-//    lone
-//    stag
-//    unknown
-//    unconfirmed
 
-    List<List<Widget>> matrixList = [];
-    List<Widget> columnWidgets = [];
+  loadIconAndDescriptionMatrix();
 
-    //  index 0 - description, so <= matrix width [5 bands = 6 columns]           FOR Loop x
-    for (int x = 0; x <= ageBandMinutes.length; x++) {
-
-      columnWidgets = []; // empty the column
-      //                                                                          FOR loop (y)
-      for (int y = 0; y <= animalGroupSizeList.length; y++) {
-
-        //                                                                        0,0 is the top left title
-        if (x == 0) {
-          if (y == 0) {
-            columnWidgets.add(
-              Container(height: matrixRowHeight, width: matrixColWidth, child:
-                Text("Up to: ", style: titleStyle,)
-              ));
-            //                                                                    0,y is the animalGroupSize title (key)
-          } else {
-            columnWidgets.add(
-                Container(height: matrixRowHeight, width: matrixColWidth*1.7, child:
-                  Text(animalGroupSizeList[y - 1].key,style: titleStyle,)
-                ));
-          }
-        } else {
-        //                                                                        x,0 is the top row - age
-          if (y == 0) {
-            columnWidgets.add(
-                Container(height: matrixRowHeight/2.0, width: matrixColWidth, child:
-                    Text(ageMinutesAsString(ageBandMinutes[x - 1]), style: titleStyle,)
-            ));
-          } else {    //                                                          x,y is the file name GROUP+COLOR
-        //  for the main x,y items we need a file name
-            //                            look up the filename
-            //            y=animal group size                       x= aged color
-            // todo This is where we should use the image lookup to load the icon
-            String filenameAndPath = "images/" +
-                animalGroupSizeList[y - 1].imageFileName +
-                ageBandColorsList[x - 1] +
-                ".png" ;
-//            debugPrint("    - " + filenameAndPath + "   # ${animalGroupSizeList[y-1].key} ${ageMinutesAsString(ageBandMinutes[x - 1])} ($x,$y)");
-            columnWidgets.add(
-                Container(height: matrixRowHeight, width: matrixColWidth, child:
-//                Text("${animalGroupSizeList[y - 1].imageFileName}${ageBandColorsList[x - 1]}")
-                Image.asset(filenameAndPath)
-            ));
-//            Image.asset(filenameAndPath);
-    }
-        }
-      } // end of y loop (rows)
-//      debugPrint("End of y loop" + columnWidgets.toString());
-      matrixList.add(columnWidgets);
-    } // end of x loop (columns)
-
-//    debugPrint("matrixList= " + matrixList.toString());
 
     //  so this widget list displays rows which are each made of columns of widgets
-    myRowColumnWidgets = matrixList
+    myRowColumnWidgets = descriptionMatrix
         .map(
           // map the numberList to a Column
           (columns) => Column(
@@ -140,4 +78,85 @@ class _SecondPageMenuState extends State<SecondPageMenu> {
       ),
     );
   }
+}
+
+// #############################################################################
+// # loadIconAndDescriptionMatrix(double matrixRowHeight, double matrixColWidth ) {
+// # build TWO matrices:
+// #  1) descriptionMatrix - descriptions and images by age band and groupsize
+// #     =================
+// #        AGEBAND       +red  +blue +green +brown +grey
+// #   GROUPSIZE
+// #   herd            herdred herdblue
+// #   small
+// #   lone
+// #   stag
+// #   unknown
+// #   unconfirmed
+// #   2) markerIconMatrix - the Uint8List versions of the image files above
+// #      ================
+// #      built at the same time, without header or title column
+// ############################################################################
+void loadIconAndDescriptionMatrix(double matrixRowHeight, double matrixColWidth ) {
+  TextStyle titleStyle = TextStyle(fontWeight: FontWeight.bold,);
+  List<List<Widget>> descriptionMatrix = [];    // matrix 1) as described above
+  List<Widget>       columnWidgets = [];        // populates the columns above
+  List<List<Uint8List>> markerIconMatrix = [];  // matrix 2) as described above
+  List<Uint8List>    columnIcons = [];          // populates the columns above
+
+
+  //  index 0 - description, so <= matrix width [5 bands = 6 columns]           FOR Loop x
+  for (int x = 0; x <= ageBandMinutes.length; x++) {
+
+    columnWidgets = []; // empty the column   images or desriptions
+    columnIcons = [];   // empty the column   Uint8List
+
+    //                                                                          FOR loop (y)
+    for (int y = 0; y <= animalGroupSizeList.length; y++) {
+
+      //                                                                        0,0 is the top left title
+      if (x == 0) {
+        if (y == 0) {
+          columnWidgets.add(
+              Container(height: matrixRowHeight, width: matrixColWidth, child:
+              Text("Up to: ", style: titleStyle,)
+              ));
+          //                                                                    0,y is the animalGroupSize title (key)
+        } else {
+          columnWidgets.add(
+              Container(height: matrixRowHeight, width: matrixColWidth*1.7, child:
+              Text(animalGroupSizeList[y - 1].key,style: titleStyle,)
+              ));
+        }
+      } else {
+        //                                                                        x,0 is the top row - age
+        if (y == 0) {
+          columnWidgets.add(
+              Container(height: matrixRowHeight/2.0, width: matrixColWidth, child:
+              Text(ageMinutesAsString(ageBandMinutes[x - 1]), style: titleStyle,)
+              ));
+        } else {    //                                                          x,y is the file name GROUP+COLOR
+          //  for the main x,y items we need a file name
+          //                            look up the filename
+          //            y=animal group size                       x= aged color
+          // todo This is where we should use the image lookup to load the icon
+          String filenameAndPath = "images/" +
+              animalGroupSizeList[y - 1].imageFileName +
+              ageBandColorsList[x - 1] +
+              ".png" ;
+          columnWidgets.add(
+              Container(height: matrixRowHeight, width: matrixColWidth, child:
+              Image.asset(filenameAndPath)
+              ));
+          columnIcons.add(
+            getBytesFromAsset(filenameAndPath, 100)
+          );
+        }
+      }
+
+    } // end of y loop (rows)   end of y loop (rows)      end of y loop (rows)  end of y loop (rows)
+    descriptionMatrix.add(columnWidgets);
+    markerIconMatrix.add(columnIcons);
+  } // end of x loop (columns)         // end of x loop (columns)            // end of x loop (columns)
+
 }

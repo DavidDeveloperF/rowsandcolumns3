@@ -1,6 +1,17 @@
 import 'dart:ui' as ui;
 import 'dart:typed_data';                     // added by SDK
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';       // added by SDK
+
+// #############################################################################
+// # class AnimalGroupSize  - TODO  ought to be in the database
+// # animalGroupSizeList    - animal groups which should be read from the db
+// #                        - includes the relevant image file name
+// # ageBandMinutes         - TODO  ought to be in the database
+// # ageBandColorlist       - TODO  ought to be in the database
+// #                        - time bands: eg up to 240min = red (most current)
+// #                        - Over final band also means due to be archived
+// #############################################################################
 
 class AnimalGroupSize {
   String key;               // eg 'Herd'
@@ -26,19 +37,42 @@ AnimalGroupSize(key: "Unknown", description: "group of deer (unknown number)", a
 AnimalGroupSize(key: "Unconfirmed", description: "unconfirmed Sighting", animalType: "Deer", status: "Live", imageFileName: "outline"),
 ];
 
-final List<String> ageBandColorsList =[
-  "red",
-  "blue",
-  "brown",      // ought to be green, but don't actually have a green set
-  "brown",
-  "grey"
-];
-//final double ageinMinutes01 = 300.0;    //  5 hours   0.22a
+//Original code: wherearethedeer version 0.6 and earlier
+//final double ageinMinutes01 = 240.0;    //  4 hours   0.22a
 //final double ageinMinutes02 = 720.0;    // 12 hours   0.22a
 //final double ageinMinutes03 = 1440.0;   // 24 hours   0.22a
 //final double ageinMinutes04 = 2880.0;   // 120 hours  0.22a
 //final double ageinMinutes05 = 7200.0;   // 5x24 hours
-final List<int> ageBandMinutes =[300, 720, 1440,2880,7200];
+final List<int> ageBandMinutes =      [240,   720,   1440,     2880,    7200];
+final List<String> ageBandColorsList =["red","blue", "brown", "brown",  "grey"];
+// Third item ought to be green, but don't actually have any green images
+
+// #############################################################################
+// #  lookupAgeBandColumn
+// #  Loop through in descending order because we want the lowest column number
+// #############################################################################
+int lookupAgeBandColumn(int itemAgeMinutes) {
+  int columnIndex = ageBandMinutes.length;            // oldest = final column
+                                                  // ought to be archived if > final band
+  for (int i=ageBandMinutes.length; i>= 0; i--) {
+    if (itemAgeMinutes <= ageBandMinutes[i]) {columnIndex = i;}
+    debugPrint("item age (minutes) = $itemAgeMinutes column $columnIndex ${ageBandMinutes[i]}");
+    }
+  return columnIndex;
+}
+// #############################################################################
+// #  lookupAnimalGroupRow
+// #  Loop through in descending order because we want the lowest column number
+// #############################################################################
+int lookupAnimalGroupRow(String animalGroupSize) {
+  int rowIndex = animalGroupSizeList.length;      // final column = default
+
+  for (int i=0; i< animalGroupSizeList.length; i++) {
+    if (animalGroupSize == animalGroupSizeList[i].key) {rowIndex = i;}
+    debugPrint("item groupSize = $animalGroupSize  Row= $rowIndex ${animalGroupSizeList[i].key}");
+    }
+  return rowIndex;
+}
 
 
 // OK we'll build a table of markers
