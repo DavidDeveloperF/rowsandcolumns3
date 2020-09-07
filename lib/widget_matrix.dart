@@ -24,7 +24,7 @@ class _DisplayDescriptionMatrixState extends State<DisplayDescriptionMatrix> {
 // # build TWO matrices:
 // #  1) descriptionMatrix - descriptions and images by age band and groupsize
 // #  2) markerIconMatrix - the Uint8List versions of the image files
-    loadIconAndDescriptionMatrix(matrixRowHeight, matrixColWidth);
+    loadDescriptionMatrix(matrixRowHeight, matrixColWidth);
 
     //  so this widget list displays rows which are each made of columns of widgets
     myRowColumnWidgets = descriptionMatrix
