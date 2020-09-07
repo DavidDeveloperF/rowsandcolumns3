@@ -235,10 +235,12 @@ void loadDescriptionMatrix(double matrixRowHeight, double matrixColWidth) {
 }
 
 // #############################################################################
+// #   loadIconMatrix
 // #   2) markerIconMatrix - the Uint8List versions of the image files above
 // #      ================
 // #############################################################################
 Future<void> loadIconMatrix() async {
+  debugPrint(DateTime.now().toString() + " Started loadIconMatrix - results to follow:");
   //  Note that THIS version does not have the header row or title column
   //       so it cycles from 0 to less than List length (not <= as above)
   //                                                                            FOR loop (x)
@@ -260,7 +262,13 @@ Future<void> loadIconMatrix() async {
 
     } // end of y loop (rows)   end of y loop (rows)      end of y loop (rows)  end of y loop (rows)
     markerIconMatrix.add(columnIcons);
-  } // end of x loop (columns)         // end of x loop (columns)            // end of x loop (columns)
+  } // end of x loop (columns)          // end of x loop (columns)            // end of x loop (columns)
+
+  debugPrint(DateTime.now().toString() + " Completed markerIconMatrix.length = ${markerIconMatrix.length} - results below:");
+  debugPrint(markerIconMatrix.toString());  // seems to limit the number of characters displayed
+                               // I assume this DID work & waited for completion
+  debugPrint(DateTime.now().toString() + " Another look markerIconMatrix.length = ${markerIconMatrix.length} - results below:");
+
 }
 
 // ############################################################################

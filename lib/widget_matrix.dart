@@ -69,11 +69,12 @@ class _DisplayDescriptionMatrixState extends State<DisplayDescriptionMatrix> {
 
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => MyHomePage()));
+          loadIconMatrix();
+//          Navigator.push(
+//              context, MaterialPageRoute(builder: (context) => MyHomePage()));
         },
-        tooltip: "Back",
-        child: Icon(Icons.backspace),
+        tooltip: "Icons",
+        child: Icon(Icons.data_usage),
       ),
     );
   }
