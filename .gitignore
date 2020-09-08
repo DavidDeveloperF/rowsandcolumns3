@@ -41,3 +41,18 @@ app.*.map.json
 
 # Exceptions to above rules.
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
+
+####################################################################################################
+# Below taken from article on how to use Git
+# https://medium.com/better-programming/how-to-use-git-in-android-studio-part-1-a8a554006aad
+#
+# content of .gitignore
+# *.iml                         already in the standard file (above)
+# .gradle                       I disagree with this - changes here are critcal
+/local.properties
+#/.idea/*                       already in the standard file (above)
+#.DS_Store                      already in the standard file (above)
+#/build                         already in the standard file (above)
+/captures
+.externalNativeBuild
+.cxx
